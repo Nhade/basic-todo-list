@@ -1,9 +1,13 @@
 const savedTasks = localStorage.getItem("tasks");
 const tasksArray = (savedTasks === null) ? [] : JSON.parse(savedTasks);
 
-const taskList = document.querySelector("ul");
-const taskNameInput = document.querySelector("input");
+const taskList = document.getElementById("task-list");
+const taskNameInput = document.querySelector("input#task-name");
 const taskCreateButton = document.getElementById("create-btn");
+
+function updateTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasksArray));
+}
 
 function createTask(taskName) {
     const newTaskListItem = document.createElement("li");
@@ -17,7 +21,7 @@ function createTask(taskName) {
     newTaskButton.addEventListener("click", ()=>{
         newTaskButton.parentElement.remove();
         tasksArray.splice(tasksArray.indexOf(taskName), 1);
-        localStorage.setItem("tasks", JSON.stringify(tasksArray));
+        updateTasks();
     });
     
     newTaskListItem.style.listStyleType = "none";
@@ -37,15 +41,6 @@ taskCreateButton.addEventListener("click", ()=>{
     taskNameInput.value = '';
     createTask(name);
     tasksArray.push(name);
-    localStorage.setItem("tasks", JSON.stringify(tasksArray));
+    updateTasks();
 });
-
-
-// const buttonList = taskList.querySelectorAll("button");
-
-// buttonList.forEach( (button) => {
-//     button.addEventListener("click", ()=>{
-//         button.parentElement.remove();
-//     });
-// });
 
