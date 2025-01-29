@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #DDD;
+    background-color: #161A1D;
+}
+
+h2 {
+    font-weight: 500;
+    font-size: 5rem;
+    letter-spacing: -0.05em;
+    line-height: 100%;
+    margin: 0;
+    width: fit-content;
+    background: linear-gradient(90deg, #33eaff 20%, #33ff7e 80%);
+    color: transparent;
+    background-clip: text;
+}
+
+button {
+    cursor: pointer;
+}
+
+.input-container {
+    width: 20rem;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#task-name {
+    all: unset;
+    font-size: 1.2rem;
+    height: 3rem;
+    width: calc(100% - 3rem);
+    border-radius: 1.5rem;
+    padding: 0 1.5rem;
+    margin-right: -3rem;
+    background-color: #22272B;
+    color: inherit;
+    border: 2px solid hsla(142, 55%, 55%, 40%);
+    transition: 0.15s;
+}
+
+#task-name:focus {
+    border: 2px solid hsla(142, 55%, 55%, 100%);
+    box-shadow: 0 0 5px hsl(142, 55%, 55%);
+}
+
+#create-btn {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 1rem;
+    border: none;
+    background-color: hsla(142, 55%, 45%, 100%);
+    color: #DDD;
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.15s;
+}
+
+#create-btn:hover {
+    background-color: hsla(142, 55%, 55%, 100%);
+}
+
+#create-btn:active {
+    background-color: hsla(142, 55%, 30%, 100%);
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20vh;
+}
+
+#task-list {
+    all: unset;
+    min-width: 20rem;
+}
+
+#task-list li {
+    list-style-type: none;
+    line-height: 2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#task-list li button{
+    margin-left: auto;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: hsla(4, 91%, 60%, 100%);
+    color: #DDD;
+    transition: 0.15s;
+}
+
+#task-list li button:hover {
+    background-color: hsla(4, 91%, 70%, 100%);
+    cursor: pointer;
+}
+
+#task-list li button:active {
+    background-color: hsla(4, 91%, 45%, 100%);
+}
+
+#task-list li span {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+}
+
+#task-list li input {
+    /* all: unset; */
+    border: 2px solid #666;
+    background-color: #DDD;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 0.6rem;
+    margin-right: 1rem;
+}
+
+#task-list li input:checked {
+    /* all: unset; */
+    border: 2px solid #666;
+    background-color: #DDD;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 0.6rem;
+    margin-right: 1rem;
+}
+
