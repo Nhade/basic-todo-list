@@ -68,10 +68,8 @@ tasksArray.forEach((taskObj)=>{
 });
 
 taskCreateButton.addEventListener("click", ()=>{
-    const name = taskNameInput.value;
-    if(tasksArray.includes(name)){
-        
-    }else{
+    const name = taskNameInput.value.trim();
+    if(tasksArray.map((e) => e.name).indexOf(name) === -1 && name){
         taskNameInput.value = '';
         const taskObj = {name: name, done: false};
         createTask(taskObj);
