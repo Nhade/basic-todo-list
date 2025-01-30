@@ -76,5 +76,18 @@ taskCreateButton.addEventListener("click", ()=>{
         tasksArray.push(taskObj);
         updateTasks();
     }
+    taskNameInput.focus();
 });
 
+taskNameInput.addEventListener("keydown", (event)=>{
+    if(event.key === "Enter") {
+        const name = taskNameInput.value.trim();
+        if(tasksArray.map((e) => e.name).indexOf(name) === -1 && name){
+            taskNameInput.value = '';
+            const taskObj = {name: name, done: false};
+            createTask(taskObj);
+            tasksArray.push(taskObj);
+            updateTasks();
+        }
+    }
+})
