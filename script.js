@@ -42,8 +42,10 @@ function createTask(taskObj) {
     newTaskName.textContent = taskObj.name;
     newTaskCheckbox.type = "checkbox";
     newTaskCheckbox.checked = taskObj.done;
+    newTaskName.classList.toggle("active", taskObj.done);
     newTaskCheckbox.addEventListener("change", ()=>{
         taskObj.done = newTaskCheckbox.checked;
+        newTaskName.classList.toggle("active", taskObj.done);
         updateTasks();
     });
     newTaskButton.appendChild(createMinusSvg());

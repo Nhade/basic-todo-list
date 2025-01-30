@@ -22,6 +22,10 @@ button {
     cursor: pointer;
 }
 
+span {
+    transition: 0.15s;
+}
+
 .input-container {
     width: 20rem;
     margin: 1rem 0;
@@ -140,3 +144,7 @@ button {
     margin-right: 1rem;
 }
 
+.active {
+    color: hsl(142, 50%, 50%);
+    text-decoration: line-through;
+}
