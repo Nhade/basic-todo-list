@@ -1,3 +1,5 @@
+import "./style.css";
+
 const savedTasks = localStorage.getItem("tasks");
 const tasksArray = savedTasks === null ? [] : JSON.parse(savedTasks);
 
