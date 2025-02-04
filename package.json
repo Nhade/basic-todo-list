@@ -1,4 +1,16 @@
 {
+  "main": "main.js",
+  "homepage": "http://nhade.github.io/basic-todo-list",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nhade/basic-todo-list.git"
+  },
+  "scripts": {
+    "start": "webpack server",
+    "build": "webpack",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
   "devDependencies": {
     "css-loader": "^7.1.2",
     "gh-pages": "^6.3.0",
