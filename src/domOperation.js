@@ -1,5 +1,5 @@
 import { deleteTask } from "./storageOperation";
-
+import { Task } from "./Task.js";
 export function createMinusSvg() {
   const svgNS = "http://www.w3.org/2000/svg";
 
@@ -23,25 +23,25 @@ export function createMinusSvg() {
   return svg;
 }
 
-export function createTask(taskObj, tasksArray, taskList, updateTasks) {
+export function createTask(task, tasksArray, taskList, updateTasks) {
   const newTaskListItem = document.createElement("li");
   const newTaskCheckbox = document.createElement("input");
   const newTaskName = document.createElement("span");
   const newTaskButton = document.createElement("button");
 
-  newTaskName.textContent = taskObj.name;
+  newTaskName.textContent = task.name;
   newTaskCheckbox.type = "checkbox";
-  newTaskCheckbox.checked = taskObj.done;
-  newTaskName.classList.toggle("active", taskObj.done);
+  newTaskCheckbox.checked = task.done;
+  newTaskName.classList.toggle("active", task.done);
   newTaskCheckbox.addEventListener("change", () => {
-    taskObj.done = newTaskCheckbox.checked;
-    newTaskName.classList.toggle("active", taskObj.done);
+    task.toggle();
+    newTaskName.classList.toggle("active", task.done);
     updateTasks(tasksArray);
   });
   newTaskButton.appendChild(createMinusSvg());
   newTaskButton.addEventListener("click", () => {
     newTaskButton.parentElement.remove();
-    deleteTask(tasksArray, taskObj.name);
+    deleteTask(tasksArray, task.name);
     updateTasks(tasksArray);
   });
 

@@ -1,4 +1,6 @@
 import "./style.css";
+import { Task } from "./Task.js";
+import { constructNow } from "date-fns";
 
 const taskList = document.getElementById("task-list");
 const taskNameInput = document.querySelector("input#task-name");
@@ -34,21 +36,22 @@ function loadStorageModule() {
 Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
   const tasksArray = storage.getTasks();
 
-  tasksArray.forEach((taskObj) => {
-    dom.createTask(taskObj, tasksArray, taskList, storage.updateTasks);
+  tasksArray.forEach((task) => {
+    dom.createTask(task, tasksArray, taskList, storage.updateTasks);
   });
 
   function addTask() {
     const name = taskNameInput.value.trim();
     if (tasksArray.map((e) => e.name).indexOf(name) === -1 && name) {
       taskNameInput.value = "";
-      const taskObj = { name: name, done: false };
-      dom.createTask(taskObj, tasksArray, taskList, storage.updateTasks);
-      storage.addTask(tasksArray, taskObj);
+      const task = new Task(name, constructNow(), 0, "owo");
+      dom.createTask(task, tasksArray, taskList, storage.updateTasks);
+      storage.addTask(tasksArray, task);
       storage.updateTasks(tasksArray);
     }
   }
-  taskCreateButton.addEventListener("click", ()=>{
+
+  taskCreateButton.addEventListener("click", () => {
     addTask();
     taskNameInput.focus();
   });
