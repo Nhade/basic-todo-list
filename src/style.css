@@ -90,13 +90,21 @@ span {
 #task-list li {
   list-style-type: none;
   line-height: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+#task-list li:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+#task-list li .primary-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-#task-list li button {
+#task-list li .primary-row button {
   margin-left: auto;
   width: 2rem;
   height: 2rem;
@@ -110,21 +118,21 @@ span {
   transition: 0.15s;
 }
 
-#task-list li button:hover {
+#task-list li .primary-row button:hover {
   background-color: hsla(4, 91%, 70%, 100%);
   cursor: pointer;
 }
 
-#task-list li button:active {
+#task-list li .primary-row button:active {
   background-color: hsla(4, 91%, 45%, 100%);
 }
 
-#task-list li span {
+#task-list li .primary-row span {
   font-size: 1.2rem;
   margin-right: 1rem;
 }
 
-#task-list li input {
+#task-list li .primary-row input {
   /* all: unset; */
   border: 2px solid #666;
   background-color: #ddd;
@@ -134,7 +142,7 @@ span {
   margin-right: 1rem;
 }
 
-#task-list li input:checked {
+#task-list li .primary-row input:checked {
   /* all: unset; */
   border: 2px solid #666;
   background-color: #ddd;
@@ -142,6 +150,16 @@ span {
   width: 1.5rem;
   border-radius: 0.6rem;
   margin-right: 1rem;
+}
+
+#task-list li .secondary-row {
+  font-size: 1rem;
+  color: #aaa;
+  padding-left: 2.75rem;
+}
+
+#task-list li .secondary-row span:not(:last-of-type)::after {
+  content: " ⸱ ";
 }
 
 .active {

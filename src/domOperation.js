@@ -1,5 +1,6 @@
 import { deleteTask } from "./storageOperation";
-import { Task } from "./Task.js";
+import { intlFormat, intlFormatDistance, constructNow } from "date-fns";
+
 export function createMinusSvg() {
   const svgNS = "http://www.w3.org/2000/svg";
 
@@ -28,6 +29,8 @@ export function createTask(task, tasksArray, taskList, updateTasks) {
   const newTaskCheckbox = document.createElement("input");
   const newTaskName = document.createElement("span");
   const newTaskButton = document.createElement("button");
+  const divPrimaryRow = document.createElement("div");
+  divPrimaryRow.classList.add("primary-row");
 
   newTaskName.textContent = task.name;
   newTaskCheckbox.type = "checkbox";
@@ -40,14 +43,36 @@ export function createTask(task, tasksArray, taskList, updateTasks) {
   });
   newTaskButton.appendChild(createMinusSvg());
   newTaskButton.addEventListener("click", () => {
-    newTaskButton.parentElement.remove();
+    newTaskButton.parentElement.parentElement.remove();
     deleteTask(tasksArray, task.name);
     updateTasks(tasksArray);
   });
 
-  newTaskListItem.appendChild(newTaskCheckbox);
-  newTaskListItem.appendChild(newTaskName);
-  newTaskListItem.appendChild(newTaskButton);
+  divPrimaryRow.appendChild(newTaskCheckbox);
+  divPrimaryRow.appendChild(newTaskName);
+  divPrimaryRow.appendChild(newTaskButton);
 
+  const taskPriority = document.createElement("span");
+  const taskDescription = document.createElement("span");
+  const taskDate = document.createElement("span");
+  const divSecondaryRow = document.createElement("div");
+  divSecondaryRow.classList.add("secondary-row");
+
+  taskPriority.textContent = task.priority;
+  taskDescription.textContent = task.description;
+  taskDate.textContent = `${intlFormat(task.dueDate, {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  })}, ${intlFormatDistance(task.dueDate, `${constructNow()}`)}`;
+
+  divSecondaryRow.appendChild(taskPriority);
+  divSecondaryRow.appendChild(taskDescription);
+  divSecondaryRow.appendChild(taskDate);
+
+  newTaskListItem.appendChild(divPrimaryRow);
+  newTaskListItem.appendChild(divSecondaryRow);
   taskList.appendChild(newTaskListItem);
 }

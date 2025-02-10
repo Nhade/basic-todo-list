@@ -44,7 +44,7 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
     const name = taskNameInput.value.trim();
     if (tasksArray.map((e) => e.name).indexOf(name) === -1 && name) {
       taskNameInput.value = "";
-      const task = new Task(name, constructNow(), 0, "owo");
+      const task = new Task(name, `${constructNow()}`, 0, "owo");
       dom.createTask(task, tasksArray, taskList, storage.updateTasks);
       storage.addTask(tasksArray, task);
       storage.updateTasks(tasksArray);

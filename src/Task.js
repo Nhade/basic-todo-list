@@ -1,3 +1,5 @@
+import { formatISO, parseISO } from "date-fns";
+
 export class Task {
   constructor(name, date, priority, description = null, done = false) {
     this.name = name;
@@ -14,14 +16,20 @@ export class Task {
   toJSON() {
     return {
       name: this.name,
-      dueDate: this.dueDate,
+      dueDate: formatISO(this.dueDate),
       priority: this.priority,
       description: this.description,
-      done: this.done
-    }
+      done: this.done,
+    };
   }
 
   static fromJSON(json) {
-    return new Task(json.name, json.date, json.priority, json.description, json.done);
+    return new Task(
+      json.name,
+      parseISO(json.dueDate),
+      json.priority,
+      json.description,
+      json.done
+    );
   }
 }

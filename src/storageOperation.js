@@ -1,4 +1,4 @@
-import { Task } from "./Task.js"
+import { Task } from "./Task.js";
 
 export function getTasks() {
   const savedTasks = localStorage.getItem("tasks");
@@ -7,7 +7,9 @@ export function getTasks() {
   } else {
     try {
       const array = JSON.parse(savedTasks);
-      return array.map((object) => { return Task.fromJSON(object); });
+      return array.map((object) => {
+        return Task.fromJSON(object);
+      });
     } catch (error) {
       console.log(error);
       return [];
