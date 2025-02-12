@@ -54,6 +54,8 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
   taskCreateButton.addEventListener("click", () => {
     addTask();
     taskNameInput.focus();
+    const sidebar = document.querySelector(".sidebar");
+    sidebar.style.right = "0px";
   });
 
   taskNameInput.addEventListener("keydown", (event) => {

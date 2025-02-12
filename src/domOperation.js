@@ -42,6 +42,7 @@ export function createTask(task, tasksArray, taskList, updateTasks) {
     updateTasks(tasksArray);
   });
   newTaskButton.appendChild(createMinusSvg());
+  newTaskButton.classList.add("button-secondary");
   newTaskButton.addEventListener("click", () => {
     newTaskButton.parentElement.parentElement.remove();
     deleteTask(tasksArray, task.name);
