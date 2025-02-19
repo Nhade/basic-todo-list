@@ -3,7 +3,7 @@
 body {
   font-family: "Poppins", sans-serif;
   color: #ddd;
-  background-color: #161a1d;
+  background-color: hsl(0, 0%, 12%);
 }
 
 h2 {
@@ -153,8 +153,8 @@ span {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  background-color: #21272b;
-  color: #eee;
+  background-color: hsl(0, 0%, 22%);
+  color: hsla(0, 0%, 100%, 86%);
   height: auto;
   width: 30vw;
   margin: 0px 2rem;
@@ -165,6 +165,29 @@ span {
 .sidebar-content * {
   font-family: "Poppins", sans-serif;
   font-size: 1rem;
+}
+
+.sidebar-content input,
+.sidebar-content textarea {
+  all: unset;
+  color: hsla(0, 0%, 100%, 86%);
+  background-color: hsl(0, 0%, 16%);
+  border: 2px solid hsl(0, 0%, 46%);
+  transition: 0.15s;
+}
+
+.sidebar-content input:focus,
+.sidebar-content input:active,
+.sidebar-content textarea:focus,
+.sidebar-content textarea:active {
+  border: 2px solid #2e90fa;
+  box-shadow: 0px 0px 0px 3px hsl(211, 95%, 58%, 30%);
+}
+
+.sidebar-content input:invalid,
+.sidebar-content textarea:invalid {
+  border: 2px solid #ee4342;
+  box-shadow: 0px 0px 0px 3px hsla(0, 83%, 60%, 30%);
 }
 
 .sidebar-content input#task-name-1 {
@@ -198,7 +221,7 @@ span {
 .task-datetime-container input[type="date"] {
   height: 2rem;
   border-radius: 0.5rem;
-  /* padding: 0 0.5rem; */
+  padding: 0 0.5rem;
 }
 .task-datetime-container input[type="text"] {
   height: 2rem;
@@ -235,7 +258,7 @@ span {
 
 .sidebar-button-container button {
   height: 3rem;
-  color: #eee;
+  color: hsla(0, 0%, 100%, 86%);
 }
 
 .sidebar-button-container button#cancel-create {
@@ -257,7 +280,7 @@ span {
 .button-primary {
   border: none;
   background-color: hsla(142, 55%, 45%, 100%);
-  color: #ddd;
+  color: hsla(0, 0%, 100%, 86%);
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -275,7 +298,7 @@ span {
 .button-secondary {
   border: none;
   background-color: hsla(4, 91%, 60%, 100%);
-  color: #ddd;
+  color: hsla(0, 0%, 100%, 86%);
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -293,7 +316,7 @@ span {
 .button-tertiary {
   border: 2px solid #aaa;
   background-color: rgba(255, 255, 255, 0.2);
-  color: #ddd;
+  color: hsla(0, 0%, 100%, 86%);
   display: inline-flex;
   justify-content: center;
   align-items: center;
