@@ -9,6 +9,8 @@ const sidebar = document.querySelector(".sidebar");
 const sidebarTaskName = document.getElementById("task-name-1");
 const sidebarTaskDescription = document.getElementById("task-description");
 const sidebarTaskPriority = document.getElementById("task-priority");
+const sidebarTaskHour = document.getElementById("task-hour");
+const sidebarTaskMinute = document.getElementById("task-minute");
 const sidebarCancelButton = document.getElementById("cancel-create");
 const sidebarSaveButton = document.getElementById("save-task");
 
@@ -68,6 +70,14 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
     if (event.key === "Enter") {
       addTask();
     }
+  });
+
+  sidebarTaskHour.addEventListener("input", (event) => {
+    event.target.value = String(+event.target.value).padStart(2, "0");
+  });
+
+  sidebarTaskMinute.addEventListener("input", (event) => {
+    event.target.value = String(+event.target.value).padStart(2, "0");
   });
 
   sidebarCancelButton.addEventListener("click", () => {

@@ -38,9 +38,9 @@
       <div class="task-datetime-container">
         <span>Due date</span>
         <input type="date" name="task-date" id="task-date">
-        <input type="text" name="task-hour" id="task-hour" pattern="[01][0-9]|2[0-3]" maxlength="2" placeholder="Hour">
+        <input type="number" name="task-hour" id="task-hour" min="0" max="23" value="00" placeholder="HH">
         <span>:</span>
-        <input type="text" name="task-minute" id="task-minute" pattern="[0-5][0-9]" maxlength="2" placeholder="Minute">
+        <input type="number" name="task-minute" id="task-minute" min="0" max="59" value="00" placeholder="mm">
       </div>
       <div class="task-priority-container">
         <span>Priority</span>

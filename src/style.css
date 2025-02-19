@@ -223,7 +223,7 @@ span {
   border-radius: 0.5rem;
   padding: 0 0.5rem;
 }
-.task-datetime-container input[type="text"] {
+.task-datetime-container input[type="number"] {
   height: 2rem;
   width: 4rem;
   border-radius: 0.5rem;
