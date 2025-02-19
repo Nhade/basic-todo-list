@@ -5,6 +5,12 @@ import { constructNow } from "date-fns";
 const taskList = document.getElementById("task-list");
 const taskNameInput = document.querySelector("input#task-name");
 const taskCreateButton = document.getElementById("create-btn");
+const sidebar = document.querySelector(".sidebar");
+const sidebarTaskName = document.getElementById("task-name-1");
+const sidebarTaskDescription = document.getElementById("task-description");
+const sidebarTaskPriority = document.getElementById("task-priority");
+const sidebarCancelButton = document.getElementById("cancel-create");
+const sidebarSaveButton = document.getElementById("save-task");
 
 let domModule = null;
 let storageModule = null;
@@ -61,6 +67,36 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
   taskNameInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       addTask();
+    }
+  });
+
+  sidebarCancelButton.addEventListener("click", () => {
+    sidebar.style.right = "-30vw";
+  });
+
+  sidebarSaveButton.addEventListener("click", () => {
+    const name = sidebarTaskName.value.trim();
+    if (!tasksArray.some((task) => task.name === name) && name) {
+      const description = sidebarTaskDescription.value;
+      const priority = +sidebarTaskPriority.value;
+      const date = document.getElementById("task-date");
+      let year, month, day;
+      [year, month, day] = date.value.split("-");
+      const hour = document.getElementById("task-hour").value;
+      const minute = document.getElementById("task-minute").value;
+      if (
+        !isNaN(priority) &&
+        hour >= 0 &&
+        hour <= 23 &&
+        minute >= 0 &&
+        minute <= 59
+      ) {
+        const datetime = new Date(year, month - 1, day, hour, minute);
+        const task = new Task(name, `${datetime}`, priority, description);
+        dom.createTask(task, tasksArray, taskList, storage.updateTasks);
+        storage.addTask(tasksArray, task);
+        storage.updateTasks(tasksArray);
+      }
     }
   });
 });
