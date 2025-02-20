@@ -1,4 +1,5 @@
 import { deleteTask } from "./storageOperation";
+import { intlFormat, intlFormatDistance, constructNow } from "date-fns";
 
 export function createMinusSvg() {
   const svgNS = "http://www.w3.org/2000/svg";
@@ -23,31 +24,56 @@ export function createMinusSvg() {
   return svg;
 }
 
-export function createTask(taskObj, tasksArray, taskList, updateTasks) {
+export function createTask(task, tasksArray, taskList, updateTasks) {
   const newTaskListItem = document.createElement("li");
   const newTaskCheckbox = document.createElement("input");
   const newTaskName = document.createElement("span");
   const newTaskButton = document.createElement("button");
+  const divPrimaryRow = document.createElement("div");
+  divPrimaryRow.classList.add("primary-row");
 
-  newTaskName.textContent = taskObj.name;
+  newTaskName.textContent = task.name;
   newTaskCheckbox.type = "checkbox";
-  newTaskCheckbox.checked = taskObj.done;
-  newTaskName.classList.toggle("active", taskObj.done);
+  newTaskCheckbox.checked = task.done;
+  newTaskName.classList.toggle("active", task.done);
   newTaskCheckbox.addEventListener("change", () => {
-    taskObj.done = newTaskCheckbox.checked;
-    newTaskName.classList.toggle("active", taskObj.done);
+    task.toggle();
+    newTaskName.classList.toggle("active", task.done);
     updateTasks(tasksArray);
   });
   newTaskButton.appendChild(createMinusSvg());
+  newTaskButton.classList.add("button-secondary");
   newTaskButton.addEventListener("click", () => {
-    newTaskButton.parentElement.remove();
-    deleteTask(tasksArray, taskObj.name);
+    newTaskButton.parentElement.parentElement.remove();
+    deleteTask(tasksArray, task.name);
     updateTasks(tasksArray);
   });
 
-  newTaskListItem.appendChild(newTaskCheckbox);
-  newTaskListItem.appendChild(newTaskName);
-  newTaskListItem.appendChild(newTaskButton);
+  divPrimaryRow.appendChild(newTaskCheckbox);
+  divPrimaryRow.appendChild(newTaskName);
+  divPrimaryRow.appendChild(newTaskButton);
 
+  const taskPriority = document.createElement("span");
+  const taskDescription = document.createElement("span");
+  const taskDate = document.createElement("span");
+  const divSecondaryRow = document.createElement("div");
+  divSecondaryRow.classList.add("secondary-row");
+
+  taskPriority.textContent = task.priority;
+  taskDescription.textContent = task.description;
+  taskDate.textContent = `${intlFormat(task.dueDate, {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  })}, ${intlFormatDistance(task.dueDate, `${constructNow()}`)}`;
+
+  divSecondaryRow.appendChild(taskPriority);
+  divSecondaryRow.appendChild(taskDescription);
+  divSecondaryRow.appendChild(taskDate);
+
+  newTaskListItem.appendChild(divPrimaryRow);
+  newTaskListItem.appendChild(divSecondaryRow);
   taskList.appendChild(newTaskListItem);
 }

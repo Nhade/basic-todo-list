@@ -19,7 +19,7 @@
     <h2>Todo List</h2>
     <div class="input-container">
       <input type="text" id="task-name" placeholder="Add New Task">
-      <button id="create-btn">
+      <button class="button-primary" id="create-btn">
         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
           width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -29,6 +29,55 @@
     </div>
     <ul id="task-list">
     </ul>
+  </div>
+  <div class="sidebar">
+    <div class="sidebar-content">
+      <span class="title-medium">Add Task</span>
+      <input type="text" id="task-name-1" placeholder="Task Name">
+      <textarea name="task-description" id="task-description" placeholder="Task Description"></textarea>
+      <div class="task-datetime-container">
+        <span>Due date</span>
+        <input type="date" name="task-date" id="task-date">
+        <input type="number" name="task-hour" id="task-hour" min="0" max="23" value="00" placeholder="HH">
+        <span>:</span>
+        <input type="number" name="task-minute" id="task-minute" min="0" max="59" value="00" placeholder="mm">
+      </div>
+      <div class="task-priority-container">
+        <span>Priority</span>
+        <div class="dropdown">
+          <button class="button-tertiary" id="dropdown-btn">
+            <span>Select Priority</span>
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+              viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m8 10 4 4 4-4" />
+            </svg>
+          </button>
+          <div class="dropdown-container">
+            <div class="option">
+              Urgent
+            </div>
+            <div class="option">
+              Very High
+            </div>
+            <div class="option">
+              High
+            </div>
+            <div class="option">
+              Medium
+            </div>
+            <div class="option">
+              Low
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-button-container">
+        <button class="button-tertiary" id="cancel-create">Cancel</button>
+        <button class="button-primary" id="save-task">Save Task</button>
+      </div>
+
+    </div>
   </div>
 </body>
 
