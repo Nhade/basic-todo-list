@@ -6,13 +6,14 @@ const taskList = document.getElementById("task-list");
 const taskNameInput = document.querySelector("input#task-name");
 const taskCreateButton = document.getElementById("create-btn");
 const sidebar = document.querySelector(".sidebar");
-const sidebarTaskName = document.getElementById("task-name-1");
-const sidebarTaskDescription = document.getElementById("task-description");
-const sidebarTaskPriority = document.getElementById("task-priority");
-const sidebarTaskHour = document.getElementById("task-hour");
-const sidebarTaskMinute = document.getElementById("task-minute");
 const sidebarCancelButton = document.getElementById("cancel-create");
 const sidebarSaveButton = document.getElementById("save-task");
+const sidebarDropdownButton = document.getElementById("dropdown-btn");
+const sidebarTaskName = document.getElementById("task-name-1");
+const sidebarTaskDescription = document.getElementById("task-description");
+const sidebarTaskPriority = sidebarDropdownButton.querySelector("span");
+const sidebarTaskHour = document.getElementById("task-hour");
+const sidebarTaskMinute = document.getElementById("task-minute");
 
 let domModule = null;
 let storageModule = null;
@@ -88,19 +89,13 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
     const name = sidebarTaskName.value.trim();
     if (!tasksArray.some((task) => task.name === name) && name) {
       const description = sidebarTaskDescription.value;
-      const priority = +sidebarTaskPriority.value;
+      const priority = sidebarTaskPriority.textContent;
       const date = document.getElementById("task-date");
       let year, month, day;
       [year, month, day] = date.value.split("-");
       const hour = document.getElementById("task-hour").value;
       const minute = document.getElementById("task-minute").value;
-      if (
-        !isNaN(priority) &&
-        hour >= 0 &&
-        hour <= 23 &&
-        minute >= 0 &&
-        minute <= 59
-      ) {
+      if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
         const datetime = new Date(year, month - 1, day, hour, minute);
         const task = new Task(name, `${datetime}`, priority, description);
         dom.createTask(task, tasksArray, taskList, storage.updateTasks);
@@ -108,5 +103,13 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
         storage.updateTasks(tasksArray);
       }
     }
+  });
+
+  document.querySelectorAll(".option").forEach((e) => {
+    e.addEventListener("click", (event) => {
+      sidebarDropdownButton.querySelector("span").textContent =
+        event.target.textContent.trim();
+      ``;
+    });
   });
 });
