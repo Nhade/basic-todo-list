@@ -1,4 +1,4 @@
-import { deleteTask } from "./storageOperation";
+import { deleteTask, updateTasks } from "./storageOperation";
 import { intlFormat, intlFormatDistance, constructNow } from "date-fns";
 
 export function createMinusSvg() {
@@ -24,7 +24,7 @@ export function createMinusSvg() {
   return svg;
 }
 
-export function createTask(task, tasksArray, taskList, updateTasks) {
+export function createTask(task, tasksListArray, currentListName, taskList) {
   const newTaskListItem = document.createElement("li");
   const newTaskCheckbox = document.createElement("input");
   const newTaskName = document.createElement("span");
@@ -39,14 +39,13 @@ export function createTask(task, tasksArray, taskList, updateTasks) {
   newTaskCheckbox.addEventListener("change", () => {
     task.toggle();
     newTaskName.classList.toggle("active", task.done);
-    updateTasks(tasksArray);
+    updateTasks(tasksListArray);
   });
   newTaskButton.appendChild(createMinusSvg());
   newTaskButton.classList.add("button-secondary");
   newTaskButton.addEventListener("click", () => {
     newTaskButton.parentElement.parentElement.remove();
-    deleteTask(tasksArray, task.name);
-    updateTasks(tasksArray);
+    deleteTask(tasksListArray, currentListName, task.name);
   });
 
   divPrimaryRow.appendChild(newTaskCheckbox);
@@ -76,4 +75,8 @@ export function createTask(task, tasksArray, taskList, updateTasks) {
   newTaskListItem.appendChild(divPrimaryRow);
   newTaskListItem.appendChild(divSecondaryRow);
   taskList.appendChild(newTaskListItem);
+}
+
+export function clearList(taskList) {
+  taskList.replaceChildren();
 }

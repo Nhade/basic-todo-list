@@ -1,14 +1,14 @@
-import { Task } from "./Task.js";
+import { TaskList } from "./TaskList.js";
 
 export function getTasks() {
-  const savedTasks = localStorage.getItem("tasks");
-  if (savedTasks === null) {
+  const savedTasksLists = localStorage.getItem("tasksList");
+  if (savedTasksLists === null) {
     return [];
   } else {
     try {
-      const array = JSON.parse(savedTasks);
+      const array = JSON.parse(savedTasksLists);
       return array.map((object) => {
-        return Task.fromJSON(object);
+        return TaskList.fromJSON(object);
       });
     } catch (error) {
       console.log(error);
@@ -17,14 +17,30 @@ export function getTasks() {
   }
 }
 
-export function updateTasks(tasksArray) {
-  localStorage.setItem("tasks", JSON.stringify(tasksArray));
+export function updateTasks(tasksListArray) {
+  localStorage.setItem("tasksList", JSON.stringify(tasksListArray));
 }
 
-export function deleteTask(tasksArray, nameToDelete) {
-  tasksArray.splice(tasksArray.map((e) => e.name).indexOf(nameToDelete), 1);
+export function deleteTask(tasksListArray, currentListName, nameToDelete) {
+  const tasksList = tasksListArray.find(
+    (list) => list.name === currentListName
+  );
+  if (!tasksList) {
+    console.log("Task List Not found");
+  } else {
+    tasksList.deleteTask(nameToDelete);
+  }
+  updateTasks(tasksListArray);
 }
 
-export function addTask(tasksArray, task) {
-  tasksArray.push(task);
+export function addTask(tasksListArray, currentListName, task) {
+  const tasksList = tasksListArray.find(
+    (list) => list.name === currentListName
+  );
+  if (!tasksList) {
+    console.log("Task List Not found");
+  } else {
+    tasksList.addTask(task);
+  }
+  updateTasks(tasksListArray);
 }

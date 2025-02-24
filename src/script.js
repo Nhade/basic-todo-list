@@ -1,6 +1,7 @@
 import "./style.css";
 import { Task } from "./Task.js";
 import { constructNow } from "date-fns";
+import { TaskList } from "./TaskList.js";
 
 const taskList = document.getElementById("task-list");
 const taskNameInput = document.querySelector("input#task-name");
@@ -43,11 +44,18 @@ function loadStorageModule() {
 }
 
 Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
-  const tasksArray = storage.getTasks();
+  const tasksListArray = storage.getTasks();
+  let currentListName = "owo";
+  let tasksArray = [];
 
-  tasksArray.forEach((task) => {
-    dom.createTask(task, tasksArray, taskList, storage.updateTasks);
-  });
+  function loadList(name) {
+    tasksArray = tasksListArray.find((list) => list.name === name).tasks || [];
+    currentListName = name;
+    dom.clearList(taskList);
+    tasksArray.forEach((task) => {
+      dom.createTask(task, tasksListArray, currentListName, taskList);
+    });
+  }
 
   function addTask() {
     const name = taskNameInput.value.trim();
@@ -61,10 +69,15 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
   }
 
   taskCreateButton.addEventListener("click", () => {
-    addTask();
+    // Temporary test behavior
     taskNameInput.focus();
     const sidebar = document.querySelector(".sidebar");
     sidebar.style.right = "0px";
+    if (!tasksListArray.some((list) => list.name === currentListName)) {
+      tasksListArray.push(new TaskList(currentListName));
+      storage.updateTasks(tasksListArray);
+    }
+    loadList(currentListName);
   });
 
   taskNameInput.addEventListener("keydown", (event) => {
@@ -98,9 +111,8 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
       if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
         const datetime = new Date(year, month - 1, day, hour, minute);
         const task = new Task(name, `${datetime}`, priority, description);
-        dom.createTask(task, tasksArray, taskList, storage.updateTasks);
-        storage.addTask(tasksArray, task);
-        storage.updateTasks(tasksArray);
+        dom.createTask(task, tasksListArray, currentListName, taskList);
+        storage.addTask(tasksListArray, currentListName, task);
       }
     }
   });
