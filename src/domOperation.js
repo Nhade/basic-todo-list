@@ -6,6 +6,7 @@ import {
   addList,
   getTasks,
   getList,
+  getPendingTaskCount,
 } from "./storageOperation";
 import { intlFormat, intlFormatDistance, constructNow } from "date-fns";
 
@@ -107,6 +108,25 @@ export function createTask(task, tasksListArray) {
   taskList.appendChild(newTaskListItem);
 }
 
+function handleNotificationBadge(parentContainer, name) {
+  const newNotificationCount = getPendingTaskCount(name);
+  const oldBadge = parentContainer.querySelector(".notif-badge");
+  if (newNotificationCount > 0) {
+    if (!oldBadge) {
+      const newBadge = document.createElement("span");
+      newBadge.classList.add("notif-badge");
+      newBadge.textContent = newNotificationCount;
+      parentContainer.appendChild(newBadge);
+    } else {
+      oldBadge.textContent = newNotificationCount;
+    }
+  } else {
+    if (oldBadge) {
+      oldBadge.remove();
+    }
+  }
+}
+
 export function createList(name, forceSelected = false) {
   const menuAddTaskListButton = document.getElementById("create-list-btn");
   const newListContainer = document.createElement("div");
@@ -126,6 +146,10 @@ export function createList(name, forceSelected = false) {
     changeList(name);
     loadListTasks(name);
   });
+  newListContainer.addEventListener("refresh", () => {
+    handleNotificationBadge(newListContainer, name);
+  });
+  handleNotificationBadge(newListContainer, name);
   newListContainer.classList.toggle("selected", forceSelected);
 }
 

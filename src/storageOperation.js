@@ -19,6 +19,10 @@ export function getTasks() {
 
 export function updateTasks(tasksListArray) {
   localStorage.setItem("tasksList", JSON.stringify(tasksListArray));
+  document.querySelectorAll(".menu-by-list div").forEach((element) => {
+    const event = new Event("refresh");
+    element.dispatchEvent(event);
+  });
 }
 
 export function deleteTask(tasksListArray, currentListName, nameToDelete) {
@@ -62,4 +66,13 @@ export function getList() {
 
 export function changeList(name) {
   localStorage.setItem("currentList", name);
+}
+
+export function getPendingTaskCount(name) {
+  if (hasList(name)) {
+    const tasks = getTasks().find((list) => list.name === name).tasks;
+    return tasks.filter((task) => !task.done).length;
+  } else {
+    return 0;
+  }
 }
