@@ -1,8 +1,6 @@
 import "./style.css";
 import { Task } from "./Task.js";
-import { constructNow } from "date-fns";
 
-const taskList = document.getElementById("task-list");
 const taskNameInput = document.querySelector("input#task-name");
 const taskCreateButton = document.getElementById("create-btn");
 const sidebar = document.querySelector(".sidebar");
@@ -48,27 +46,10 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
 
   dom.initialize();
 
-  function addTask() {
-    const name = taskNameInput.value.trim();
-    if (tasksArray.map((e) => e.name).indexOf(name) === -1 && name) {
-      taskNameInput.value = "";
-      const task = new Task(name, `${constructNow()}`, 0, "owo");
-      dom.createTask(task, tasksArray, taskList, storage.updateTasks);
-      storage.addTask(tasksArray, task);
-      storage.updateTasks(tasksArray);
-    }
-  }
-
   taskCreateButton.addEventListener("click", () => {
     taskNameInput.focus();
     const sidebar = document.querySelector(".sidebar");
     sidebar.style.right = "0px";
-  });
-
-  taskNameInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      addTask();
-    }
   });
 
   menuAddTaskListButton.addEventListener("click", dom.createListForm);
