@@ -44,3 +44,22 @@ export function addTask(tasksListArray, currentListName, task) {
   }
   updateTasks(tasksListArray);
 }
+
+export function hasList(name) {
+  const tasksListArray = getTasks();
+  return tasksListArray.some((list) => list.name === name);
+}
+
+export function addList(name) {
+  const tasksListArray = getTasks();
+  tasksListArray.push(new TaskList(name));
+  updateTasks(tasksListArray);
+}
+
+export function getList() {
+  return localStorage.getItem("currentList") || "";
+}
+
+export function changeList(name) {
+  localStorage.setItem("currentList", name);
+}

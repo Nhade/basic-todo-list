@@ -1,7 +1,6 @@
 import "./style.css";
 import { Task } from "./Task.js";
 import { constructNow } from "date-fns";
-import { TaskList } from "./TaskList.js";
 
 const taskList = document.getElementById("task-list");
 const taskNameInput = document.querySelector("input#task-name");
@@ -15,6 +14,7 @@ const sidebarTaskDescription = document.getElementById("task-description");
 const sidebarTaskPriority = sidebarDropdownButton.querySelector("span");
 const sidebarTaskHour = document.getElementById("task-hour");
 const sidebarTaskMinute = document.getElementById("task-minute");
+const menuAddTaskListButton = document.getElementById("create-list-btn");
 
 let domModule = null;
 let storageModule = null;
@@ -44,18 +44,9 @@ function loadStorageModule() {
 }
 
 Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
-  const tasksListArray = storage.getTasks();
-  let currentListName = "owo";
   let tasksArray = [];
 
-  function loadList(name) {
-    tasksArray = tasksListArray.find((list) => list.name === name).tasks || [];
-    currentListName = name;
-    dom.clearList(taskList);
-    tasksArray.forEach((task) => {
-      dom.createTask(task, tasksListArray, currentListName, taskList);
-    });
-  }
+  dom.initialize();
 
   function addTask() {
     const name = taskNameInput.value.trim();
@@ -69,15 +60,9 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
   }
 
   taskCreateButton.addEventListener("click", () => {
-    // Temporary test behavior
     taskNameInput.focus();
     const sidebar = document.querySelector(".sidebar");
     sidebar.style.right = "0px";
-    if (!tasksListArray.some((list) => list.name === currentListName)) {
-      tasksListArray.push(new TaskList(currentListName));
-      storage.updateTasks(tasksListArray);
-    }
-    loadList(currentListName);
   });
 
   taskNameInput.addEventListener("keydown", (event) => {
@@ -85,6 +70,8 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
       addTask();
     }
   });
+
+  menuAddTaskListButton.addEventListener("click", dom.createListForm);
 
   sidebarTaskHour.addEventListener("input", (event) => {
     event.target.value = String(+event.target.value).padStart(2, "0");
@@ -111,8 +98,8 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
       if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
         const datetime = new Date(year, month - 1, day, hour, minute);
         const task = new Task(name, `${datetime}`, priority, description);
-        dom.createTask(task, tasksListArray, currentListName, taskList);
-        storage.addTask(tasksListArray, currentListName, task);
+        dom.createTask(task, storage.getTasks());
+        storage.addTask(storage.getTasks(), storage.getList(), task);
       }
     }
   });
