@@ -158,7 +158,9 @@ export function createListForm() {
   const newListContainer = document.createElement("div");
   const newListNameInput = document.createElement("input");
 
+  newListContainer.id = "create-list-form";
   newListNameInput.type = "text";
+  newListNameInput.placeholder = "Enter List Name";
   newListContainer.appendChild(newListNameInput);
   menuAddTaskListButton.parentElement.insertBefore(
     newListContainer,
@@ -169,6 +171,9 @@ export function createListForm() {
     newListContainer.remove();
   });
   newListNameInput.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      newListContainer.remove();
+    }
     if (event.key === "Enter") {
       const name = newListNameInput.value.trim();
       if (!hasList(name)) {

@@ -446,7 +446,12 @@ span {
   .selected {
     font-weight: 600;
     background-color: hsl(0, 0%, 86%);
-    color: hsl(0, 0%, 12%);
+    :not(.notif-badge) {
+      color: hsl(0, 0%, 12%);
+    }
+    &:hover {
+      background-color: hsl(0, 0%, 65%);
+    }
   }
 }
 
@@ -473,10 +478,34 @@ span {
       margin-left: auto;
     }
   }
+  #create-list-form {
+    background-color: hsl(0, 0%, 30%);
+    input {
+      all: unset;
+      color: hsla(0, 0%, 100%, 86%);
+      background-color: hsl(0, 0%, 16%);
+      border: 2px solid hsl(0, 0%, 46%);
+      height: 1.5rem;
+      width: 100%;
+      padding: 0 0.5rem;
+      border-radius: 0.5rem;
+      transition: 0.15s;
+      &:focus,
+      &:active {
+        border: 2px solid #2e90fa;
+        box-shadow: 0px 0px 0px 3px hsl(211, 95%, 58%, 30%);
+      }
+    }
+  }
   .selected {
     font-weight: 600;
     background-color: hsl(0, 0%, 86%);
-    color: hsl(0, 0%, 12%);
+    :not(.notif-badge) {
+      color: hsl(0, 0%, 12%);
+    }
+    &:hover {
+      background-color: hsl(0, 0%, 65%);
+    }
   }
 }
 
@@ -487,7 +516,7 @@ span {
 .notif-badge {
   width: 2rem;
   background-color: hsl(0, 70%, 60%);
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   text-align: center;
 }
 
