@@ -526,3 +526,42 @@ span {
     cursor: pointer;
   }
 }
+
+.alert-box {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  width: 15rem;
+  height: 4rem;
+  text-align: center;
+  line-height: 4rem;
+  border-radius: 1rem;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: auto;
+  animation-name: fade-in-out;
+  animation-duration: 3s;
+}
+
+@keyframes fade-in-out {
+  0% {
+    background-color: hsla(0, 70%, 70%, 0%);
+    color: hsla(0, 0%, 12%, 0%);
+    bottom: 90vh;
+  }
+  10% {
+    background-color: hsla(0, 70%, 70%, 100%);
+    color: hsla(0, 0%, 12%, 100%);
+    bottom: 85vh;
+  }
+  90% {
+    background-color: hsla(0, 70%, 70%, 100%);
+    color: hsla(0, 0%, 12%, 100%);
+  }
+  100% {
+    background-color: hsla(0, 70%, 70%, 0%);
+    color: hsla(0, 0%, 12%, 0%);
+    bottom: 85vh;
+  }
+}

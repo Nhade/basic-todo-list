@@ -1,6 +1,7 @@
 import "./style.css";
 import { Task } from "./Task.js";
 
+const body = document.querySelector("body");
 const taskNameInput = document.querySelector("input#task-name");
 const taskCreateButton = document.getElementById("create-btn");
 const sidebar = document.querySelector(".sidebar");
@@ -66,7 +67,13 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
   sidebarSaveButton.addEventListener("click", () => {
     const name = sidebarTaskName.value.trim();
     if (!storage.getCurrentListName()) {
-      console.log("Please create a list first!");
+      const alertBox = document.createElement("span");
+      alertBox.textContent = "Please create a list first!";
+      alertBox.classList.add("alert-box");
+      body.appendChild(alertBox);
+      setTimeout(() => {
+        alertBox.remove();
+      }, 2900);
       return;
     }
     if (!storage.currentListHasTask(name) && name) {
