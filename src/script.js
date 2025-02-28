@@ -20,7 +20,7 @@ let storageModule = null;
 function loadDomModule() {
   if (!domModule) {
     return import(
-      /* webpackChunkName = "domOperations" */ "./domOperation.js"
+      /* webpackChunkName = "domOperation" */ "./domOperation.js"
     ).then((module) => {
       domModule = module;
       return module;
@@ -32,7 +32,7 @@ function loadDomModule() {
 function loadStorageModule() {
   if (!storageModule) {
     return import(
-      /* webpackChunkName = "storageOperations" */ "./storageOperation.js"
+      /* webpackChunkName = "storageOperation" */ "./storageOperation.js"
     ).then((module) => {
       storageModule = module;
       return module;
@@ -42,13 +42,10 @@ function loadStorageModule() {
 }
 
 Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
-  let tasksArray = [];
-
   dom.initialize();
 
   taskCreateButton.addEventListener("click", () => {
     taskNameInput.focus();
-    const sidebar = document.querySelector(".sidebar");
     sidebar.style.right = "0px";
   });
 
@@ -68,7 +65,11 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
 
   sidebarSaveButton.addEventListener("click", () => {
     const name = sidebarTaskName.value.trim();
-    if (!tasksArray.some((task) => task.name === name) && name) {
+    if (!storage.getCurrentListName()) {
+      console.log("Please create a list first!");
+      return;
+    }
+    if (!storage.currentListHasTask(name) && name) {
       const description = sidebarTaskDescription.value;
       const priority = sidebarTaskPriority.textContent;
       const date = document.getElementById("task-date");
@@ -80,7 +81,7 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
         const datetime = new Date(year, month - 1, day, hour, minute);
         const task = new Task(name, `${datetime}`, priority, description);
         dom.createTask(task, storage.getTasks());
-        storage.addTask(storage.getTasks(), storage.getList(), task);
+        storage.addTask(task);
       }
     }
   });
@@ -89,7 +90,6 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
     e.addEventListener("click", (event) => {
       sidebarDropdownButton.querySelector("span").textContent =
         event.target.textContent.trim();
-      ``;
     });
   });
 });

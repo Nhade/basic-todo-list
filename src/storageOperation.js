@@ -25,9 +25,9 @@ export function updateTasks(tasksListArray) {
   });
 }
 
-export function deleteTask(tasksListArray, currentListName, nameToDelete) {
+export function deleteTask(tasksListArray, nameToDelete) {
   const tasksList = tasksListArray.find(
-    (list) => list.name === currentListName
+    (list) => list.name === getCurrentListName()
   );
   if (!tasksList) {
     console.log("Task List Not found");
@@ -37,15 +37,11 @@ export function deleteTask(tasksListArray, currentListName, nameToDelete) {
   updateTasks(tasksListArray);
 }
 
-export function addTask(tasksListArray, currentListName, task) {
-  const tasksList = tasksListArray.find(
-    (list) => list.name === currentListName
-  );
-  if (!tasksList) {
-    console.log("Task List Not found");
-  } else {
-    tasksList.addTask(task);
-  }
+export function addTask(task) {
+  const tasksListArray = getTasks();
+  tasksListArray
+    .find((list) => list.name === getCurrentListName())
+    .addTask(task);
   updateTasks(tasksListArray);
 }
 
@@ -60,7 +56,16 @@ export function addList(name) {
   updateTasks(tasksListArray);
 }
 
-export function getList() {
+export function getList(name = "") {
+  const tasksListArray = getTasks();
+  if (name) {
+    return tasksListArray.find((list) => list.name === name);
+  } else {
+    return tasksListArray.find((list) => list.name === getCurrentListName());
+  }
+}
+
+export function getCurrentListName() {
   return localStorage.getItem("currentList") || "";
 }
 
@@ -70,9 +75,13 @@ export function changeList(name) {
 
 export function getPendingTaskCount(name) {
   if (hasList(name)) {
-    const tasks = getTasks().find((list) => list.name === name).tasks;
+    const tasks = getList(name).tasks;
     return tasks.filter((task) => !task.done).length;
   } else {
     return 0;
   }
+}
+
+export function currentListHasTask(name) {
+  return getList().hasTask(name);
 }

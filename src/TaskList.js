@@ -10,6 +10,10 @@ export class TaskList {
     this.tasks.push(task);
   }
 
+  hasTask(taskName) {
+    return this.tasks.some((task) => task.name === taskName);
+  }
+
   deleteTask(name) {
     this.tasks.splice(this.tasks.map((e) => e.name).indexOf(name), 1);
   }

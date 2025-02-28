@@ -5,10 +5,13 @@ import {
   hasList,
   addList,
   getTasks,
-  getList,
+  getCurrentListName,
   getPendingTaskCount,
 } from "./storageOperation";
 import { intlFormat, intlFormatDistance, constructNow } from "date-fns";
+
+const taskList = document.getElementById("task-list");
+const menuAddTaskListButton = document.getElementById("create-list-btn");
 
 export function createMinusSvg() {
   const svgNS = "http://www.w3.org/2000/svg";
@@ -55,7 +58,6 @@ export function createRoundedSquareSvg() {
 }
 
 export function createTask(task, tasksListArray) {
-  const taskList = document.getElementById("task-list");
   const newTaskListItem = document.createElement("li");
   const newTaskCheckbox = document.createElement("input");
   const newTaskName = document.createElement("span");
@@ -76,7 +78,7 @@ export function createTask(task, tasksListArray) {
   newTaskButton.classList.add("button-secondary");
   newTaskButton.addEventListener("click", () => {
     newTaskButton.parentElement.parentElement.remove();
-    deleteTask(tasksListArray, getList(), task.name);
+    deleteTask(tasksListArray, task.name);
   });
 
   divPrimaryRow.appendChild(newTaskCheckbox);
@@ -128,7 +130,6 @@ function handleNotificationBadge(parentContainer, name) {
 }
 
 export function createList(name, forceSelected = false) {
-  const menuAddTaskListButton = document.getElementById("create-list-btn");
   const newListContainer = document.createElement("div");
   const newListName = document.createElement("span");
   newListName.textContent = name;
@@ -154,7 +155,6 @@ export function createList(name, forceSelected = false) {
 }
 
 export function createListForm() {
-  const menuAddTaskListButton = document.getElementById("create-list-btn");
   const newListContainer = document.createElement("div");
   const newListNameInput = document.createElement("input");
 
@@ -179,9 +179,9 @@ export function createListForm() {
       if (!hasList(name)) {
         newListContainer.remove();
         addList(name);
-        if (!getList()) {
-          createList(name, true);
+        if (!getCurrentListName()) {
           changeList(name);
+          createList(name, true);
         } else {
           createList(name);
         }
@@ -191,9 +191,7 @@ export function createListForm() {
 }
 
 export function loadListTasks(name) {
-  const taskList = document.getElementById("task-list");
   const tasksListArray = getTasks();
-  console.log(tasksListArray);
   const tasksArray =
     tasksListArray.find((list) => list.name === name).tasks || [];
   taskList.replaceChildren();
@@ -204,9 +202,8 @@ export function loadListTasks(name) {
 
 export function initialize() {
   const tasksListArray = getTasks();
-  const currentListName = getList();
+  const currentListName = getCurrentListName();
   tasksListArray.forEach((list) => {
-    console.log(list);
     createList(list.name, list.name === currentListName);
   });
   if (currentListName) {
