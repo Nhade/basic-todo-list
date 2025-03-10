@@ -67,30 +67,36 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
   sidebarSaveButton.addEventListener("click", () => {
     const name = sidebarTaskName.value.trim();
     if (!storage.getCurrentListName()) {
-      const alertBox = document.createElement("span");
-      alertBox.textContent = "Please create a list first!";
-      alertBox.classList.add("alert-box");
-      body.appendChild(alertBox);
-      setTimeout(() => {
-        alertBox.remove();
-      }, 2900);
+      dom.showAlert("Please create a list first!");
       return;
     }
-    if (!storage.currentListHasTask(name) && name) {
-      const description = sidebarTaskDescription.value;
-      const priority = sidebarTaskPriority.textContent;
-      const date = document.getElementById("task-date");
-      let year, month, day;
-      [year, month, day] = date.value.split("-");
-      const hour = document.getElementById("task-hour").value;
-      const minute = document.getElementById("task-minute").value;
-      if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
-        const datetime = new Date(year, month - 1, day, hour, minute);
-        const task = new Task(name, `${datetime}`, priority, description);
-        storage.addTask(task);
-        dom.createTask(task, storage.getTasks());
-      }
+    if (!name) {
+      dom.showAlert("Task name cannot be empty!");
+      return;
     }
+    if (storage.currentListHasTask(name)) {
+      dom.showAlert("A task with this name already exists!");
+      return;
+    }
+    const description = sidebarTaskDescription.value;
+    const date = document.getElementById("task-date");
+    let year, month, day;
+    [year, month, day] = date.value.split("-");
+    const hour = document.getElementById("task-hour").value;
+    const minute = document.getElementById("task-minute").value;
+    if (!(hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59)) {
+      dom.showAlert("Invalid time!");
+      return;
+    }
+    const priority = sidebarTaskPriority.textContent;
+    if (priority === "Select Priority") {
+      dom.showAlert("Please select a priority!");
+      return;
+    }
+    const datetime = new Date(year, month - 1, day, hour, minute);
+    const task = new Task(name, `${datetime}`, priority, description);
+    storage.addTask(task);
+    dom.createTask(task, storage.getTasks());
   });
 
   document.querySelectorAll(".option").forEach((e) => {

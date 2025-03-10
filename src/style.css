@@ -532,13 +532,14 @@ span {
   top: 0px;
   left: 0px;
   right: 0px;
-  width: 15rem;
+  width: max-content;
   height: 4rem;
   text-align: center;
   line-height: 4rem;
   border-radius: 1rem;
   max-width: 100vw;
   max-height: 100vh;
+  padding: 0 1rem;
   margin: auto;
   animation-name: fade-in-out;
   animation-duration: 3s;

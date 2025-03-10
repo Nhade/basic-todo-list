@@ -1,5 +1,4 @@
 import {
-  deleteTask,
   updateTasks,
   changeList,
   hasList,
@@ -8,12 +7,7 @@ import {
   getCurrentListName,
   getPendingTaskCount,
 } from "./storageOperation";
-import {
-  intlFormat,
-  intlFormatDistance,
-  constructNow,
-  getOverlappingDaysInIntervals,
-} from "date-fns";
+import { intlFormat, intlFormatDistance, constructNow } from "date-fns";
 
 const taskList = document.getElementById("task-list");
 const menuAddTaskListButton = document.getElementById("create-list-btn");
@@ -125,6 +119,20 @@ export function createTask(task) {
   taskList.appendChild(newTaskListItem);
 }
 
+export function showAlert(message) {
+  const existingAlert = document.querySelector(".alert-box");
+  if (existingAlert) {
+    existingAlert.remove();
+  }
+  const alertBox = document.createElement("div");
+  alertBox.textContent = message;
+  alertBox.classList.add("alert-box");
+  document.body.appendChild(alertBox);
+  setTimeout(() => {
+    alertBox.remove();
+  }, 2900);
+}
+
 function handleNotificationBadge(parentContainer, name) {
   const newNotificationCount = getPendingTaskCount(name);
   const oldBadge = parentContainer.querySelector(".notif-badge");
@@ -199,19 +207,25 @@ export function createListForm() {
     }
     if (event.key === "Enter") {
       const name = newListNameInput.value.trim();
-      if (!hasList(name)) {
-        try {
-          newListContainer.remove();
-        } catch (error) {
-          console.log(error);
-        }
-        addList(name);
-        if (!getCurrentListName()) {
-          changeList(name);
-          createList(name, true);
-        } else {
-          createList(name);
-        }
+      if (!name) {
+        showAlert("List name cannot be empty!");
+        return;
+      }
+      if (hasList(name)) {
+        showAlert("A list with this name already exists!");
+        return;
+      }
+      try {
+        newListContainer.remove();
+      } catch (error) {
+        console.log(error);
+      }
+      addList(name);
+      if (!getCurrentListName()) {
+        changeList(name);
+        createList(name, true);
+      } else {
+        createList(name);
       }
     }
   });
