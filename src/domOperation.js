@@ -8,7 +8,12 @@ import {
   getCurrentListName,
   getPendingTaskCount,
 } from "./storageOperation";
-import { intlFormat, intlFormatDistance, constructNow } from "date-fns";
+import {
+  intlFormat,
+  intlFormatDistance,
+  constructNow,
+  getOverlappingDaysInIntervals,
+} from "date-fns";
 
 const taskList = document.getElementById("task-list");
 const menuAddTaskListButton = document.getElementById("create-list-btn");
@@ -57,7 +62,7 @@ export function createRoundedSquareSvg() {
   return svg;
 }
 
-export function createTask(task, tasksListArray) {
+export function createTask(task) {
   const newTaskListItem = document.createElement("li");
   const newTaskCheckbox = document.createElement("input");
   const newTaskName = document.createElement("span");
@@ -70,15 +75,25 @@ export function createTask(task, tasksListArray) {
   newTaskCheckbox.checked = task.done;
   newTaskName.classList.toggle("active", task.done);
   newTaskCheckbox.addEventListener("change", () => {
-    task.toggle();
-    newTaskName.classList.toggle("active", task.done);
+    const tasksListArray = getTasks();
+    const currentList = tasksListArray.find(
+      (list) => list.name === getCurrentListName()
+    );
+    const taskObj = currentList.tasks.find((obj) => obj.name === task.name);
+    taskObj.toggle();
+    newTaskName.classList.toggle("active", taskObj.done);
     updateTasks(tasksListArray);
   });
   newTaskButton.appendChild(createMinusSvg());
   newTaskButton.classList.add("button-secondary");
   newTaskButton.addEventListener("click", () => {
     newTaskButton.parentElement.parentElement.remove();
-    deleteTask(tasksListArray, task.name);
+    const tasksListArray = getTasks();
+    const currentList = tasksListArray.find(
+      (list) => list.name === getCurrentListName()
+    );
+    currentList.deleteTask(task.name);
+    updateTasks(tasksListArray);
   });
 
   divPrimaryRow.appendChild(newTaskCheckbox);
@@ -168,16 +183,28 @@ export function createListForm() {
   );
   newListNameInput.focus();
   newListNameInput.addEventListener("focusout", () => {
-    newListContainer.remove();
+    try {
+      newListContainer.remove();
+    } catch (error) {
+      console.log(error);
+    }
   });
   newListNameInput.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      newListContainer.remove();
+      try {
+        newListContainer.remove();
+      } catch (error) {
+        console.log(error);
+      }
     }
     if (event.key === "Enter") {
       const name = newListNameInput.value.trim();
       if (!hasList(name)) {
-        newListContainer.remove();
+        try {
+          newListContainer.remove();
+        } catch (error) {
+          console.log(error);
+        }
         addList(name);
         if (!getCurrentListName()) {
           changeList(name);

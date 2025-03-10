@@ -87,8 +87,8 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
       if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
         const datetime = new Date(year, month - 1, day, hour, minute);
         const task = new Task(name, `${datetime}`, priority, description);
-        dom.createTask(task, storage.getTasks());
         storage.addTask(task);
+        dom.createTask(task, storage.getTasks());
       }
     }
   });
