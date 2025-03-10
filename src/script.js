@@ -93,10 +93,19 @@ Promise.all([loadDomModule(), loadStorageModule()]).then(([dom, storage]) => {
       dom.showAlert("Please select a priority!");
       return;
     }
-    const datetime = new Date(year, month - 1, day, hour, minute);
-    const task = new Task(name, `${datetime}`, priority, description);
-    storage.addTask(task);
-    dom.createTask(task, storage.getTasks());
+    try {
+      const datetime = new Date(year, month - 1, day, hour, minute);
+      const task = new Task(name, `${datetime}`, priority, description);
+      storage.addTask(task);
+      dom.createTask(task, storage.getTasks());
+    } catch (error) {
+      if (error instanceof RangeError) {
+        dom.showAlert("Invalid date!");
+      } else {
+        dom.showAlert("Something went wrong, please try again.");
+        console.log(e);
+      }
+    }
   });
 
   document.querySelectorAll(".option").forEach((e) => {
